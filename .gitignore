@@ -1,0 +1,12 @@
+*~
+.DS_Store
+.settings
+target-eclipse
+.classpath
+.project
+target
+plugin.xml
+stacktrace.log
+Servers
+.metadata
+*.jasper
