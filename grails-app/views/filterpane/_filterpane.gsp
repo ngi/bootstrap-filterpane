@@ -14,13 +14,13 @@
 <table cellspacing="0" cellpadding="0" class="filterPaneTable">
 <g:each in="${fp.properties}" var="propMap">
 
-	<g:render template="/filterpane/filterpaneProperty" plugin="filterpane" model="${propMap}" />
+	<g:render template="/filterpane/filterpaneProperty" plugin="bootstrap-filterpane" model="${propMap}" />
 
 </g:each>
 </table>
 
 <g:if test="${fp.showSortPanel == true}">
-	<g:render template="/filterpane/filterpaneSort" plugin="filterpane" model="${fp.sortModel}" />
+	<g:render template="/filterpane/filterpaneSort" plugin="bootstrap-filterpane" model="${fp.sortModel}" />
 </g:if>
 <g:else>
 	<input type="hidden" name="sort" value="${params.sort}" />
@@ -29,7 +29,7 @@
 
 <g:if test="${fp.showButtons == true}">
 
-	<g:render template="/filterpane/filterpaneButtons" plugin="filterpane" model="${fp.buttonModel}" />
+	<g:render template="/filterpane/filterpaneButtons" plugin="bootstrap-filterpane" model="${fp.buttonModel}" />
 
 </g:if>
 

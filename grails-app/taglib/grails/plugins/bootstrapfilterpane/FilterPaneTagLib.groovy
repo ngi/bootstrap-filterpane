@@ -86,10 +86,10 @@ class FilterPaneTagLib {
 		}
 
 		if (showCss)
-			out << "<link rel=\"stylesheet\" type=\"text/css\" href=\"${g.resource(dir: 'css', plugin: 'filterpane', file: 'fp.css')}\" />\n"
+			out << "<link rel=\"stylesheet\" type=\"text/css\" href=\"${g.resource(dir: 'css', plugin: 'bootstrap-filterpane', file: 'fp.css')}\" />\n"
 
 		if (showJs)
-			out << "<script type=\"text/javascript\" src=\"${g.resource(dir: 'js', plugin: 'filterpane', file: 'fp.js')}\"></script>"
+			out << "<script type=\"text/javascript\" src=\"${g.resource(dir: 'js', plugin: 'bootstrap-filterpane', file: 'fp.js')}\"></script>"
 	}
 
 	def isFiltered = { attrs, body ->
@@ -122,7 +122,7 @@ class FilterPaneTagLib {
 		} else {
 			renderModel.text = resolveAttribute (attrs.textKey, "fp.tag.filterButton.text", attrs.text, "Filter")
 		}
-		out << g.render(template:"/filterpane/filterButton", plugin:'filterpane', model:renderModel)
+		out << g.render(template:"/filterpane/filterButton", plugin:'bootstrap-filterpane', model:renderModel)
 	}
 
 	/**
@@ -275,7 +275,7 @@ class FilterPaneTagLib {
 			}
 			//log.debug("=================================================================")
 			//log.debug("renderModel: ${renderModel}")
-			out << g.render(template:"/filterpane/currentCriteria", plugin:'filterpane', model:renderModel)
+			out << g.render(template:"/filterpane/currentCriteria", plugin:'bootstrap-filterpane', model:renderModel)
 		}
 
 	}
@@ -546,7 +546,7 @@ class FilterPaneTagLib {
 					containerId: renderModel.containerId,
 					formName: renderModel.formName ]
 
-		out << g.render(template:"/filterpane/filterpane", plugin:'filterpane', model:[fp:renderModel])
+		out << g.render(template:"/filterpane/filterpane", plugin:'bootstrap-filterpane', model:[fp:renderModel])
 	}
 
 	def date = { attrs, body ->
@@ -557,12 +557,12 @@ class FilterPaneTagLib {
 		model.value = d
 		model.onChange = "grailsFilterPane.selectDefaultOperator('${attrs.opName}')"
 		model.isDayPrecision = (attrs.precision == 'day') ? 'y' : 'n'
-		def ret = g.render(template:"/filterpane/dateControl", plugin:'filterpane', model:[ctrlAttrs:model])
+		def ret = g.render(template:"/filterpane/dateControl", plugin:'bootstrap-filterpane', model:[ctrlAttrs:model])
 		out << ret
 	}
 
 	def bool = { attrs, body ->
-		def ret = g.render(template:"/filterpane/boolean", plugin:'filterpane', model: attrs)
+		def ret = g.render(template:"/filterpane/boolean", plugin:'bootstrap-filterpane', model: attrs)
 		out << ret
 	}
 
