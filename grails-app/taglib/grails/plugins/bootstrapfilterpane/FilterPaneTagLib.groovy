@@ -541,15 +541,15 @@ class FilterPaneTagLib {
 		out << g.render(template:"/filterpane/filterpane", plugin:'bootstrap-filterpane', model:[fp:renderModel])
 	}
 
-	def date = { attrs, body ->
-
+	def dateInput = { attrs, body ->
 		Date d = FilterPaneUtils.parseDateFromDatePickerParams(attrs.name, params)
 		def model = [:]
 		model.putAll(attrs)
 		model.value = d
 		model.onChange = "grailsFilterPane.selectDefaultOperator('${attrs.opName}')"
 		model.isDayPrecision = (attrs.precision == 'day') ? 'y' : 'n'
-		def ret = g.render(template:"/filterpane/dateControl", plugin:'bootstrap-filterpane', model:[ctrlAttrs:model])
+		model.'default' = 'none'
+		def ret = g.render(template:"/filterpane/property/date", plugin:'bootstrap-filterpane', model:[ctrlAttrs: model])
 		out << ret
 	}
 
@@ -564,7 +564,7 @@ class FilterPaneTagLib {
 		switch (attrs.ctrlType) {
 
 			case 'date':
-			ret = date(attrs.ctrlAttrs)
+			ret = dateInput(attrs.ctrlAttrs)
 			break
 			case 'bool':
 			case 'boolean':
