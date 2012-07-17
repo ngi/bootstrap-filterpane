@@ -12,7 +12,7 @@ var grailsFilterPane = {
 			} else {
 				var el = document.getElementById(id);
 				if (el && el.style.display == 'none') {
-					el.style.display = 'block';
+					el.style.display = 'inline';
 				}
 			}
 		} catch (err) {
