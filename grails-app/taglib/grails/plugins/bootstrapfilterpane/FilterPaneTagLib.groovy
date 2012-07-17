@@ -59,39 +59,6 @@ class FilterPaneTagLib {
 		'enum': ['', 'Equal', 'NotEqual'],
 		currency: ['', 'Equal', 'NotEqual']]
 
-	/**
-	 * 
-	 * This tag generates necessary style and script includes.  Use this tag in the head element
-	 * of your pages.<br/>
-	 * <br/>
-	 * Attributes
-	 * <ul>
-	 * <li>css - add this attribute to generate stylesheet includes (any value is fine)</li>
-	 * <li>js - add this attribute to generate javascript includes (any value is fine)</li>
-	 * <li>(none) - Using the tag with no attributes is identical to adding both. (&lt;filterpane:includes css="true" js="true" /&gt;</li>
-	 * </ul>
-	 *
-	 * @since 0.4; attributes since 2.0
-	 */
-	// TODO resources
-	def includes = { attrs, body ->
-		boolean showCss = false
-		boolean showJs = false
-		if (attrs != null && attrs.size() > 0) {
-			showCss = (attrs.css != null)
-			showJs = (attrs.js != null)
-		} else {
-			showCss = true
-			showJs = true
-		}
-
-		if (showCss)
-			out << "<link rel=\"stylesheet\" type=\"text/css\" href=\"${g.resource(dir: 'css', plugin: 'bootstrap-filterpane', file: 'fp.css')}\" />\n"
-
-		if (showJs)
-			out << "<script type=\"text/javascript\" src=\"${g.resource(dir: 'js', plugin: 'bootstrap-filterpane', file: 'fp.js')}\"></script>"
-	}
-
 	def isFiltered = { attrs, body ->
 		if (FilterPaneUtils.isFilterApplied(params)) {
 			out << body()
