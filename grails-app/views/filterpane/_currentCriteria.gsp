@@ -18,13 +18,8 @@
 						and ${c.filterValueTo}
 					</g:else>
 				</g:if>
-				<a href="${g.createLink(action:action,params:c.params)}" class="remove">
-					<g:if test="${removeImgFile != null}">
-						<img src="${g.resource(dir:removeImgDir, file:removeImgFile)}" alt="(X)" title="${g.message(code:'fp.currentCriteria.removeTitle', default:'Remove')}" />
-					</g:if>
-					<g:else>
-						(X)
-					</g:else>
+				<a href="${g.createLink(action:action, params:c.params)}" class="remove">
+					<i class="icon-minus-sign"></i>
 				</a>
 			</li>
 		</g:each>
