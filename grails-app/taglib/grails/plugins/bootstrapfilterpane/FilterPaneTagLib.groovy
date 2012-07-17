@@ -553,9 +553,8 @@ class FilterPaneTagLib {
 		out << ret
 	}
 
-	def bool = { attrs, body ->
-		def ret = g.render(template:"/filterpane/boolean", plugin:'bootstrap-filterpane', model: attrs)
-		out << ret
+	def booleanInput = { attrs, body ->
+		out << g.render(template:'/filterpane/property/boolean', plugin:'bootstrap-filterpane', model: attrs)
 	}
 
 	def input = { attrs, body ->
@@ -565,21 +564,21 @@ class FilterPaneTagLib {
 		switch (attrs.ctrlType) {
 
 			case 'date':
-				ret = date(attrs.ctrlAttrs)
-				break
+			ret = date(attrs.ctrlAttrs)
+			break
 			case 'bool':
 			case 'boolean':
-				ret = bool(attrs.ctrlAttrs)
-				break
+			ret = booleanInput(attrs.ctrlAttrs)
+			break
 			case 'select':
-				ret = g.select(attrs.ctrlAttrs)
-				break
+			ret = g.select(attrs.ctrlAttrs)
+			break
 			case 'text':
-				ret = g.textField(attrs.ctrlAttrs)
-				break
+			ret = g.textField(attrs.ctrlAttrs)
+			break
 			default:
-				ret = "<-- Unknown control type: ${attrs.ctrlType} -->"
-				break
+			ret = "<-- Unknown control type: ${attrs.ctrlType} -->"
+			break
 		}
 
 		if (ret)
