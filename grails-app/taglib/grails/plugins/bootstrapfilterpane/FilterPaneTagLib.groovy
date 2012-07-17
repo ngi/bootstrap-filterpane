@@ -3,10 +3,10 @@ package grails.plugins.bootstrapfilterpane
 class FilterPaneTagLib {
 
 	static namespace = "bfp"
-	
+
 	// TODO moving to config
-	private static final String LAST_UPDATED = "lastUpdated"
-	private static final String DefaultFilterPaneId = "filterPane"
+	def LAST_UPDATED = "lastUpdated"
+	def DefaultFilterPaneId = "filterPane"
 
 	/**
 	 * This map contains available filter operations by type.  It is used when creating the
