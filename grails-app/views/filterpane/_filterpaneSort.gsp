@@ -1,26 +1,24 @@
-<div>
-	<g:message code="fp.tag.filterPane.sort.orderByText" default="Order by" />
-
-	<g:if test="${sortValueMessagePrefix == null}">
+<div class="controls form-inline">
+<label for="sort">
+<g:message code="grails.plugins.bootstrapfilterpane.sort.orderByText" />
+<g:if test="${sortValueMessagePrefix == null}">
 	<!-- g:if test="${g.message(code:sortValueMessagePrefix, default:'false') == 'false'}"-->
-		<g:select name="sort" 
-				from="${sortedProperties}" 
-				keys="${sortKeys}" 
-				optionValue="filterPaneFieldName" 
-				value="${sortValue}"
-				noSelection="${noSelection}" />
-	</g:if>
-	<g:else>
-		<g:select name="sort"
-				from="${sortedProperties}"
-				keys="${sortKeys}"
-				valueMessagePrefix="${sortValueMessagePrefix}"
-				noSelection="${noSelection}"
-				value="${sortValue}" />
-	</g:else>
-	&nbsp;
-	<g:radio name="order" value="asc" checked="${orderAsc}" />
-	&nbsp;<g:message code="fp.tag.filterPane.sort.ascending" default="Ascending" />
-	<g:radio name="order" value="desc" checked="${orderDesc}" />
-	&nbsp;<g:message code="fp.tag.filterpane.sort.descending" default="Descending" />
+	<g:select name="sort" from="${sortedProperties}" keys="${sortKeys}"
+		optionValue="filterPaneFieldName" value="${sortValue}"
+		noSelection="${noSelection}" />
+</g:if>
+<g:else>
+	<g:select name="sort" from="${sortedProperties}" keys="${sortKeys}"
+		valueMessagePrefix="${sortValueMessagePrefix}"
+		noSelection="${noSelection}" value="${sortValue}" />
+</g:else>
+</label>
+<label class="radio" for="order.asc">
+<g:radio name="order" value="asc" checked="${orderAsc}" />
+<g:message code="grails.plugins.bootstrapfilterpane.sort.ascending"/>
+</label>
+<label class="radio" for="order.desc">
+<g:radio name="order" value="desc" checked="${orderDesc}" />
+<g:message code="grails.plugins.bootstrapfilterpane.sort.descending" />
+</label>
 </div>
