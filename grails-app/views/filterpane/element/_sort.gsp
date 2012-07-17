@@ -2,7 +2,7 @@
 <label for="sort">
 <g:message code="grails.plugins.bootstrapfilterpane.sort.orderByText" />
 <g:if test="${sortValueMessagePrefix == null}">
-	<!-- g:if test="${g.message(code:sortValueMessagePrefix, default:'false') == 'false'}"-->
+	<!-- g:if test="${g.message(code:sortValueMessagePrefix) == 'false'}"-->
 	<g:select name="sort" from="${sortedProperties}" keys="${sortKeys}"
 		optionValue="filterPaneFieldName" value="${sortValue}"
 		noSelection="${noSelection}" />

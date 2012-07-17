@@ -11,7 +11,7 @@ class FilterPaneTagLib {
 	/**
 	 * This map contains available filter operations by type.  It is used when creating the
 	 * individual rows in the filter pane.  The values in the text maps are key suffixes for the
-	 * resource bundle.  The prefix used in the valueMessagePrefix attribute will be fp.op.
+	 * resource bundle.  The prefix used in the valueMessagePrefix attribute will be grails.plugins.bootstrapfilterpane.op.
 	 */
 	def availableOpsByType = [
 		text: [
@@ -87,7 +87,7 @@ class FilterPaneTagLib {
 		
 		def smb = new groovy.xml.StreamingMarkupBuilder()
 		
-		def attributes = ['href': '#', 'class': 'pull-right btn btn-primary', 'onClick': "toggle${filterPaneId}(\$(this));"]
+		def attributes = ['href': '#', 'class': "${filterPaneId} pull-right btn btn-primary", 'onClick': "toggle${filterPaneId}();"]
 
 		def textI18nCode = attrs.textI18nCode
 		def filterApplied = FilterPaneUtils.isFilterApplied(params)
@@ -95,7 +95,7 @@ class FilterPaneTagLib {
 		if (filterApplied) {
 			attributes['btn'] += ' filter-applied'
 		}
-		println textI18nCode
+
 		out << smb.bind {
 			a(attributes) {
 				if (textI18nCode != null) {
@@ -106,15 +106,6 @@ class FilterPaneTagLib {
 			}
 		}
 		
-		out << r.script() {
-			"""
-				function toggle${filterPaneId}(button) {
-					\$('#${filterPaneId}').toggle(); 
-					\$(button).find("i").toggleClass('icon-chevron-up').toggleClass('icon-chevron-down');
-					return false;
-				}
-			"""
-		}
 	}
 
 	/**
@@ -272,27 +263,32 @@ class FilterPaneTagLib {
 
 	}
 
+	/*
+	 * 
+	 * @attr domainBean REQUIRED 
+	 * 
+	 */
 	def filterPane = { attrs, body ->
 
-		if (!attrs.domain) {
+		if (!attrs.domainBean) {
 			log.error("domain attribute is required")
-			return
+			throwTagError("Tag [filterPane] requires a domainBean attribute")
 		}
 
 		def renderModel = [customForm:false]
 
 		// Validate required info
-		def domain = FilterPaneUtils.resolveDomainClass(grailsApplication, attrs.domain)
+		def domain = FilterPaneUtils.resolveDomainClass(grailsApplication, attrs.domainBean)
 		if (domain == null) {
 			log.error("Unable to resolve domain class for ${attrs.domain}")
-			return
+			throwTagError("Tag [filterPane] requires a valid domain")
 		}
 
 		boolean useFullAssociationPath = resolveBoolAttrValue(attrs.fullAssociationPathFieldNames ?: 'y')
 
 		// Set up the render model.
 
-		renderModel.title = resolveAttribute(attrs.titleKey, 'fp.tag.filterPane.titleText', attrs.title, 'Filter')
+		renderModel.title = resolveAttribute(attrs.titleKey, 'grails.plugins.bootstrapfilterpane.titleText', attrs.title, 'Filter')
 		renderModel.containerId = attrs.id ?: DefaultFilterPaneId
 		renderModel.containerIsDialog = resolveBoolAttrValue(attrs.dialog) ? " fp-dialog" : ""
 		renderModel.containerVisibleStyle = resolveBoolAttrValue(attrs.visible) ? "" : "display:none;"
@@ -523,22 +519,32 @@ class FilterPaneTagLib {
 		log.debug("Sort keys: ${sortKeys}")
 
 		renderModel.sortModel = [sortValueMessagePrefix:attrs.sortValueMessagePrefix ?: null,
-					sortedProperties: sortedProps,
-					sortKeys: sortKeys,
-					sortValue: params.sort ?: "",
-					noSelection: ['':g.message(code:'fp.tag.filterPane.sort.noSelection.text', default:'Select a Property')],
-					orderAsc: params.order == 'asc',
-					orderDesc: params.order == 'desc']
+			sortedProperties: sortedProps,
+			sortKeys: sortKeys,
+			sortValue: params.sort ?: "",
+			noSelection: ['':g.message(code:'grails.plugins.bootstrapfilterpane.sort.noSelection.text')],
+			orderAsc: params.order == 'asc',
+			orderDesc: params.order == 'desc']
 
 		renderModel.buttonModel = [
-					cancelText: g.message(code:'fp.tag.filterPane.button.cancel.text', default:'Cancel'),
-					clearText:  g.message(code:'fp.tag.filterPane.button.clear.text', default:'Clear'),
-					applyText:  g.message(code:'fp.tag.filterPane.button.apply.text', default:'Apply'),
-					action: renderModel.action,
-					containerId: renderModel.containerId,
-					formName: renderModel.formName ]
+			cancelText: g.message(code:'grails.plugins.bootstrapfilterpane.button.cancel.text'),
+			clearText:  g.message(code:'grails.plugins.bootstrapfilterpane.button.clear.text'),
+			applyText:  g.message(code:'grails.plugins.bootstrapfilterpane.button.apply.text'),
+			action: renderModel.action,
+			containerId: renderModel.containerId,
+			formName: renderModel.formName ]
 
 		out << g.render(template:"/filterpane/filterpane", plugin:'bootstrap-filterpane', model:[fp:renderModel])
+		
+		out << r.script() {
+			"""
+				function toggle${renderModel.containerId}() {
+					\$('#${renderModel.containerId}').toggle();
+					\$('.${renderModel.containerId}').find("i").toggleClass('icon-chevron-up').toggleClass('icon-chevron-down');
+					return false;
+				}
+			"""
+		}
 	}
 
 	def dateInput = { attrs, body ->
@@ -684,12 +690,13 @@ class FilterPaneTagLib {
 		// Take care of the name (label).  Yuck!
 		def fieldNameKey = "fp.property.text.${propName}" // Default.
 		def fieldNameAltKey = fieldNameKey // default for alt key.
-		def fieldNamei18NTemplateKey = "${sp.domainClass.name}.${sp.name}"
+		def fieldNamei18NTemplateKey = "${sp.domainClass.name.toLowerCase()}.${sp.name}.label"
+
 		def fieldName = sp.naturalName
 
 		if (isAssociation == true) { // association.
 			fieldNameKey = "fp.property.text.${sp.domainClass.propertyName}.${sp.name}"
-			fieldNamei18NTemplateKey = "${sp.domainClass.propertyName}.${sp.name}"
+			fieldNamei18NTemplateKey = "${sp.domainClass.propertyName.toLowerCase()}.${sp.name}.label"
 			// GRAILSPLUGINS-2027 Fix.  associated properties displaying package name.
 			def prefix = ""
 			if (sp.filterPaneFieldNamePrefix && useFullAssociationPath) {

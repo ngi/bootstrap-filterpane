@@ -3,7 +3,7 @@
 		<g:each in="${criteria}" var="c">
 			<li>
 				${c.fieldName} 
-				<g:message code="fp.op.${c.filterOp}" default="${c.filterOp}" />
+				<g:message code="grails.plugins.bootstrapfilterpane.op.${c.filterOp}" />
 				<g:if test="${quoteValues == true}">
 					"${c.filterValue}"
 				</g:if>
