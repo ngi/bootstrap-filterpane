@@ -10,13 +10,10 @@
 </g:if>
 <!-- Do we still need this hidden prop? -->
 <input type="hidden" name="filterProperties" value="${fp.filterProperties}" />
-
-<table cellspacing="0" cellpadding="0" class="filterPaneTable">
-<g:each in="${fp.properties}" var="propMap">
-
-	<g:render template="/filterpane/filterpaneProperty" plugin="bootstrap-filterpane" model="${propMap}" />
-
-</g:each>
+<table class="table table-bordered table-condensed">
+	<g:each in="${fp.properties}" var="propMap">
+		<g:render template="/filterpane/filterpaneProperty" plugin="bootstrap-filterpane" model="${propMap}" />
+	</g:each>
 </table>
 
 <g:if test="${fp.showSortPanel == true}">
@@ -28,9 +25,7 @@
 </g:else>
 
 <g:if test="${fp.showButtons == true}">
-
 	<g:render template="/filterpane/filterpaneButtons" plugin="bootstrap-filterpane" model="${fp.buttonModel}" />
-
 </g:if>
 
 <g:if test="${renderForm}">
