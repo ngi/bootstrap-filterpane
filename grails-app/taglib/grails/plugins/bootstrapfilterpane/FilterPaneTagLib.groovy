@@ -72,24 +72,49 @@ class FilterPaneTagLib {
 	}
 
 	/**
-	 * Creates a link (button) that displays the filter pane when pressed.  The title attribute
+	 * Creates a link (button) that displays the filter pane when pressed. The title attribute
 	 * may be used to modify the text on the button.  If omitted, the text will be "Filter".
 	 * The filterPaneId attribute may be specified if the associated filterPane tag has an id attribute.
 	 * Their values must be the same.
+	 * 
+	 * @attr textI18nCode i18n code of the text on the button
+	 * @attr filterPaneId DOM id of the pane to show-hide
+	 * 
 	 */
+	// TODO simplyfy
 	def filterButton = { attrs, body ->
-		def renderModel = [:]
-		renderModel.filterPaneId = attrs.filterPaneId ?: DefaultFilterPaneId
-		renderModel.styleClass = attrs.class ?: ''
-		renderModel.style = attrs.style ?: ''
+		def filterPaneId = attrs.filterPaneId?:'filterPane'
+		
+		def smb = new groovy.xml.StreamingMarkupBuilder()
+		
+		def attributes = ['href': '#', 'class': 'pull-right btn btn-primary', 'onClick': "toggle${filterPaneId}(\$(this));"]
 
-		if (FilterPaneUtils.isFilterApplied(params)) {
-			renderModel.styleClass = "filter-applied ${renderModel.styleClass}"
-			renderModel.text = resolveAttribute (attrs.appliedTextKey, "fp.tag.filterButton.appliedText", attrs.appliedText, "Filter")
-		} else {
-			renderModel.text = resolveAttribute (attrs.textKey, "fp.tag.filterButton.text", attrs.text, "Filter")
+		def textI18nCode = attrs.textI18nCode
+		def filterApplied = FilterPaneUtils.isFilterApplied(params)
+		// TODO utile?
+		if (filterApplied) {
+			attributes['btn'] += ' filter-applied'
 		}
-		out << g.render(template:"/filterpane/filterButton", plugin:'bootstrap-filterpane', model:renderModel)
+		println textI18nCode
+		out << smb.bind {
+			a(attributes) {
+				if (textI18nCode != null) {
+					"${g.message(code: textI18nCode)}"
+				} else {
+					delegate.i('class': "icon-chevron-${filterApplied?'up':'down'} icon-white") {}
+				}
+			}
+		}
+		
+		out << r.script() {
+			"""
+				function toggle${filterPaneId}(button) {
+					\$('#${filterPaneId}').toggle(); 
+					\$(button).find("i").toggleClass('icon-chevron-up').toggleClass('icon-chevron-down');
+					return false;
+				}
+			"""
+		}
 	}
 
 	/**
