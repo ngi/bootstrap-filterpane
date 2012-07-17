@@ -1,15 +1,15 @@
 modules = {
-	'bootstrap-filterpanel' {
-		defaultBundle 'filterpanel'
-		dependsOn 'bootstrap-filterpanel-js, bootstrap-filterpanel-css'
+	'bootstrap-filterpane' {
+		defaultBundle 'filterpane'
+		dependsOn 'bootstrap-filterpane-js, bootstrap-filterpane-css'
 	}
-	'bootstrap-filterpanel-js' {
-		defaultBundle 'filterpanel'
-		resource url:[plugin: 'twitter-bootstrap-filterpanel', dir: 'js', file: 'fp.js']
+	'bootstrap-filterpane-js' {
+		defaultBundle 'filterpane'
+		resource url:[plugin: 'bootstrap-filterpane', dir: 'js', file: 'fp.js']
 	}
 
-	'bootstrap-filterpanel-css' {
-		defaultBundle 'filterpanel'
-		resource url:[plugin: 'twitter-bootstrap-filterpanel', dir: 'css', file: 'fp.css']
+	'bootstrap-filterpane-css' {
+		defaultBundle 'filterpane'
+		resource url:[plugin: 'bootstrap-filterpane', dir: 'css', file: 'fp.css']
 	}
 }
